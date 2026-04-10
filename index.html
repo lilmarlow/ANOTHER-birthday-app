@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lobotomy Corp Novel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Hidden iframe for YouTube audio -->
+    <div id="audio-container" style="display: none;"></div>
+
+    <div id="game-container">
+        <!-- Start Screen -->
+        <div id="start-screen">
+            <button id="start-btn">Log In</button>
+        </div>
+
+        <!-- Game Interface -->
+        <div id="novel-interface" style="display: none;">
+            <!-- Character Area -->
+            <div id="character-area">
+                <img id="character-sprite" src="assets/character1.png" alt="Character">
+                <div id="confetti-container"></div>
+            </div>
+
+            <!-- Dialogue Options -->
+            <div id="options-container" style="display: none;"></div>
+
+            <!-- Dialogue Box -->
+            <div id="dialogue-container">
+                <div id="name-tag">Character</div>
+                <div id="dialogue-box">
+                    <p id="dialogue-text"></p>
+                    <span id="next-indicator">>>SKIP</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

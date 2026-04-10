@@ -1,0 +1,210 @@
+/* Basic reset and typography */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden; /* Prevent scrolling */
+}
+
+#game-container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Start Screen */
+#start-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+#start-btn {
+    padding: 15px 30px;
+    font-size: 24px;
+    background-color: #2ebcfc; /* Lobotomy cyan */
+    color: #000;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+    transition: transform 0.1s, background-color 0.2s;
+}
+
+#start-btn:hover {
+    background-color: #5ed2ff;
+    transform: scale(1.05);
+}
+
+/* Novel Interface */
+#novel-interface {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Character Area */
+#character-area {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* Align sprite to bottom */
+    position: relative;
+    overflow: hidden;
+}
+
+#character-sprite {
+    max-height: 90%;
+    max-width: 100%;
+    object-fit: contain;
+    /* Optional: add some CSS filter to look slightly pixelated if desired, but user said not "poorly drawn" */
+}
+
+/* Confetti Container */
+#confetti-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* Options */
+#options-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 50;
+    width: 80%;
+    max-width: 600px;
+}
+
+.option-btn {
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid #2ebcfc;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background 0.2s;
+}
+
+.option-btn:hover {
+    background: rgba(46, 188, 252, 0.3);
+}
+
+/* Dialogue System (Lobotomy UI Style) */
+#dialogue-container {
+    height: 30%;
+    min-height: 200px;
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 20px;
+}
+
+#name-tag {
+    background-color: #2ebcfc;
+    color: #000;
+    font-weight: bold;
+    font-size: 24px;
+    padding: 5px 40px 5px 20px;
+    width: fit-content;
+    clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+    margin-bottom: -10px; /* Overlap with dialogue box */
+    z-index: 2;
+    text-transform: uppercase;
+}
+
+#dialogue-box {
+    background-color: rgba(0, 0, 0, 0.85);
+    border-top: 4px solid #fff;
+    border-bottom: 4px solid #2ebcfc;
+    padding: 30px;
+    flex-grow: 1;
+    position: relative;
+    cursor: pointer;
+}
+
+#dialogue-text {
+    font-size: 20px;
+    line-height: 1.5;
+}
+
+#next-indicator {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    color: #fff;
+    font-weight: bold;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Shake animation for Scene 4 */
+.vibrate {
+    animation: shake 0.5s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+/* Confetti particles */
+.confetti {
+    position: absolute;
+    color: #2ebcfc; /* Cyan color matching UI */
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 20px;
+    user-select: none;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh);
+    }
+}
