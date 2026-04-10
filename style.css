@@ -27,29 +27,118 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #000;
+    background-color: #050505;
+    background-image: radial-gradient(circle at center, #111 0%, #000 100%);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     z-index: 100;
 }
 
-#start-btn {
-    padding: 15px 30px;
-    font-size: 24px;
-    background-color: #2ebcfc; /* Lobotomy cyan */
-    color: #000;
-    border: none;
+#menu-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 300px;
+    position: relative;
+    z-index: 10;
+}
+
+.menu-btn {
+    width: 100%;
+    padding: 20px 0;
+    font-size: 20px;
+    background-color: transparent;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     cursor: pointer;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: 2px;
+    text-align: center;
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+#start-btn {
     font-weight: bold;
-    text-transform: uppercase;
-    clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
-    transition: transform 0.1s, background-color 0.2s;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid #2ebcfc;
+    color: #2ebcfc;
+    box-shadow: inset 0 0 10px rgba(46, 188, 252, 0.2);
+}
+
+#start-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 4px; height: 100%;
+    background-color: #2ebcfc;
 }
 
 #start-btn:hover {
-    background-color: #5ed2ff;
-    transform: scale(1.05);
+    background-color: rgba(46, 188, 252, 0.15);
+    text-shadow: 0 0 8px #2ebcfc;
+    transform: translateX(5px);
+}
+
+.error-btn {
+    cursor: not-allowed;
+    color: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 0, 0, 0.2);
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(0, 0, 0, 0),
+        rgba(0, 0, 0, 0) 10px,
+        rgba(255, 0, 0, 0.03) 10px,
+        rgba(255, 0, 0, 0.03) 20px
+    );
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 0;
+}
+
+.error-btn span {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+.error-btn small {
+    font-size: 10px;
+    color: #ff3333;
+    opacity: 0.7;
+    margin-top: 5px;
+    letter-spacing: 1px;
+}
+
+.menu-decor {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+    margin: 10px 0;
+}
+
+#menu-background-elements {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.vertical-line {
+    position: absolute;
+    left: 20%;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, rgba(46, 188, 252, 0.2), transparent);
+}
+
+.vertical-line.right {
+    left: auto;
+    right: 20%;
 }
 
 /* Novel Interface */

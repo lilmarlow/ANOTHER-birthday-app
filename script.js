@@ -77,6 +77,8 @@ const script = {
 
 let currentScene = "start";
 let currentLineIndex = 0;
+let isTyping = false;
+let currentTimeout = null;
 
 // DOM Elements
 const startScreen = document.getElementById("start-screen");
@@ -114,7 +116,10 @@ function showLine() {
     // Update character info
     nameTag.textContent = lineData.character;
     characterSprite.src = lineData.sprite;
-    dialogueText.textContent = lineData.text;
+
+    // Clear text and hide options temporarily
+    dialogueText.textContent = "";
+    optionsContainer.style.display = "none";
 
     // Handle effects
     if (lineData.vibrate) {
@@ -123,24 +128,60 @@ function showLine() {
         dialogueBox.classList.remove("vibrate");
     }
 
-    // Handle end of game
-    if (lineData.end) {
-        triggerEnding();
-        dialogueBox.removeEventListener("click", advanceDialogue);
-        return;
-    }
+    // Start typewriter effect
+    isTyping = true;
+    typeWriter(lineData.text, 0, () => {
+        isTyping = false;
 
-    // Show options if present and it's the last line of the segment
-    if (lineData.options && currentLineIndex === sceneData.length - 1) {
-        showOptions(lineData.options);
+        // Handle end of game
+        if (lineData.end) {
+            triggerEnding();
+            dialogueBox.removeEventListener("click", advanceDialogue);
+            return;
+        }
+
+        // Show options if present and it's the last line of the segment
+        if (lineData.options && currentLineIndex === sceneData.length - 1) {
+            showOptions(lineData.options);
+        }
+    });
+}
+
+function typeWriter(text, index, callback) {
+    if (index < text.length) {
+        dialogueText.textContent += text.charAt(index);
+        currentTimeout = setTimeout(() => {
+            typeWriter(text, index + 1, callback);
+        }, 20); // typing speed
+    } else {
+        if (callback) callback();
     }
 }
 
 function advanceDialogue() {
     const sceneData = script[currentScene];
+    const lineData = sceneData[currentLineIndex];
+
+    // If currently typing, skip to the end of the text
+    if (isTyping) {
+        clearTimeout(currentTimeout);
+        dialogueText.textContent = lineData.text;
+        isTyping = false;
+
+        if (lineData.end) {
+            triggerEnding();
+            dialogueBox.removeEventListener("click", advanceDialogue);
+            return;
+        }
+
+        if (lineData.options && currentLineIndex === sceneData.length - 1) {
+            showOptions(lineData.options);
+        }
+        return;
+    }
 
     // Don't advance if we are showing options
-    if (sceneData[currentLineIndex].options && currentLineIndex === sceneData.length - 1) {
+    if (lineData.options && currentLineIndex === sceneData.length - 1) {
         return;
     }
 

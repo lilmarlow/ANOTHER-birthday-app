@@ -13,7 +13,19 @@
     <div id="game-container">
         <!-- Start Screen -->
         <div id="start-screen">
-            <button id="start-btn">Log In</button>
+            <div id="menu-container">
+                <div class="menu-decor top-decor"></div>
+                <button id="start-btn" class="menu-btn">LOG IN</button>
+                <div class="menu-btn error-btn" aria-disabled="true"><span>ERROR_0xFEA</span> <br><small>DATA CORRUPTED</small></div>
+                <div class="menu-btn error-btn" aria-disabled="true"><span>[REDACTED]</span></div>
+                <div class="menu-btn error-btn" aria-disabled="true"><span>SYS_FAIL</span> <br><small>ACCESS DENIED</small></div>
+                <div class="menu-decor bottom-decor"></div>
+            </div>
+
+            <div id="menu-background-elements">
+                <div class="vertical-line"></div>
+                <div class="vertical-line right"></div>
+            </div>
         </div>
 
         <!-- Game Interface -->
