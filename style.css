@@ -148,6 +148,10 @@ body {
     position: relative;
     display: flex;
     flex-direction: column;
+    background-image: url('assets/angela_background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 /* Character Area */
@@ -164,7 +168,13 @@ body {
     max-height: 90%;
     max-width: 100%;
     object-fit: contain;
-    /* Optional: add some CSS filter to look slightly pixelated if desired, but user said not "poorly drawn" */
+    animation: breathing 4s ease-in-out infinite;
+}
+
+@keyframes breathing {
+    0% { transform: scale(1) translateY(0); }
+    50% { transform: scale(1.02) translateY(-10px); }
+    100% { transform: scale(1) translateY(0); }
 }
 
 /* Confetti Container */
