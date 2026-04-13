@@ -1,0 +1,7 @@
+node_modules/
+package.json
+package-lock.json
+server.log
+verify_chibi.js
+scene1_chibi.png
+scene4_shaking.png

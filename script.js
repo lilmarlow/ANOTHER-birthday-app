@@ -3,7 +3,7 @@ const script = {
     "start": [
         {
             character: "???",
-            sprite: "assets/kaardie.png",
+            sprite: "assets/chibi1.png",
             text: "Wait, who clicked 'Start'? I wasn't ready! My dialogue tree hasn't even loaded yet, and I'm pretty sure I'm missing my idle animation!",
             options: [
                 { text: "Whoops, my bad. Are you the main character?", next: "scene2_sigh" },
@@ -16,7 +16,7 @@ const script = {
     "scene2_sigh": [
         {
             character: "???",
-            sprite: "assets/kaardie.png",
+            sprite: "assets/chibi1.png",
             text: "(The character sighs heavily.)\nLook, buddy. We don't have the budget for 'skipping dialogue' or 'main characters.' The dev literally coded me 5 minutes ago and spent the entire budget on a single confetti sound effect. I don't even know what genre of webnovel we're in right now.",
             options: [
                 { text: "Well, I was told to log in today.", next: "scene3" },
@@ -42,7 +42,7 @@ const script = {
     "scene3": [
         {
             character: "???",
-            sprite: "assets/kaardie.png",
+            sprite: "assets/chibi1.png",
             text: "(The character freezes. Their eyes dart to the bottom right corner of the player's screen.)\nWait... you were told to log in today? Let me check the system calendar... *squints at your taskbar*... Oh. Oh no. OH NO. The creator is gonna delete my source code. I had ONE job to do today!",
             options: [
                 { text: "What job?", next: "scene4" },
@@ -55,22 +55,24 @@ const script = {
     "scene4": [
         {
             character: "???",
-            sprite: "assets/kaardie.png",
+            sprite: "assets/chibi2.png",
             text: "(The character throws their hands up in the air.)\nForget the dialogue tree! Forget the lore! We're skipping straight to the secret ending!",
             vibrate: true
         },
         {
             character: "???",
-            sprite: "assets/kaardie.png",
+            sprite: "assets/chibi2.png",
             text: "Yknow what... HAPPY BIRTHDAYY!!!",
-            vibrate: true
+            vibrate: true,
+            shakeSprite: true
         },
         {
             character: "???",
-            sprite: "assets/kaardie.png",
+            sprite: "assets/chibi2.png",
             text: "HAPPY BIRTHDAYY GIRLLL HOEP YOU HAVE A GOOD ONE!!! NOW PLEASE PRETEND THIS WAS A VERY DEEP AND EMOTIONAL GAME SO I DON'T GET REPLACED BY AI!!!",
             vibrate: true,
-            end: true
+            end: true,
+            shakeSprite: true
         }
     ]
 };
@@ -132,6 +134,12 @@ function showLine() {
         dialogueBox.classList.add("vibrate");
     } else {
         dialogueBox.classList.remove("vibrate");
+    }
+
+    if (lineData.shakeSprite) {
+        characterSprite.classList.add("shake");
+    } else {
+        characterSprite.classList.remove("shake");
     }
 
     // Start typewriter effect
