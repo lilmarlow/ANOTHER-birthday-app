@@ -3,7 +3,7 @@ const script = {
     "start": [
         {
             character: "???",
-            sprite: "assets/character1.png",
+            sprite: "assets/kaardie.png",
             text: "Wait, who clicked 'Start'? I wasn't ready! My dialogue tree hasn't even loaded yet, and I'm pretty sure I'm missing my idle animation!",
             options: [
                 { text: "Whoops, my bad. Are you the main character?", next: "scene2_sigh" },
@@ -16,7 +16,7 @@ const script = {
     "scene2_sigh": [
         {
             character: "???",
-            sprite: "assets/character1.png",
+            sprite: "assets/kaardie.png",
             text: "(The character sighs heavily.)\nLook, buddy. We don't have the budget for 'skipping dialogue' or 'main characters.' The dev literally coded me 5 minutes ago and spent the entire budget on a single confetti sound effect. I don't even know what genre of webnovel we're in right now.",
             options: [
                 { text: "Well, I was told to log in today.", next: "scene3" },
@@ -29,7 +29,7 @@ const script = {
     "scene2_glare": [
         {
             character: "???",
-            sprite: "assets/character1.png",
+            sprite: "assets/kaardie.png",
             text: "(The character glares at you.)\nLook, buddy. We don't have the budget for 'skipping dialogue' or 'main characters.' The dev literally coded me 5 minutes ago and spent the entire budget on a single confetti sound effect. I don't even know what genre of webnovel we're in right now.",
             options: [
                 { text: "Well, I was told to log in today.", next: "scene3" },
@@ -42,7 +42,7 @@ const script = {
     "scene3": [
         {
             character: "???",
-            sprite: "assets/character1.png",
+            sprite: "assets/kaardie.png",
             text: "(The character freezes. Their eyes dart to the bottom right corner of the player's screen.)\nWait... you were told to log in today? Let me check the system calendar... *squints at your taskbar*... Oh. Oh no. OH NO. The creator is gonna delete my source code. I had ONE job to do today!",
             options: [
                 { text: "What job?", next: "scene4" },
@@ -55,19 +55,19 @@ const script = {
     "scene4": [
         {
             character: "???",
-            sprite: "assets/character1.png",
+            sprite: "assets/kaardie.png",
             text: "(The character throws their hands up in the air.)\nForget the dialogue tree! Forget the lore! We're skipping straight to the secret ending!",
             vibrate: true
         },
         {
             character: "???",
-            sprite: "assets/character1.png",
+            sprite: "assets/kaardie.png",
             text: "Yknow what... HAPPY BIRTHDAYY!!!",
             vibrate: true
         },
         {
             character: "???",
-            sprite: "assets/character1.png",
+            sprite: "assets/kaardie.png",
             text: "HAPPY BIRTHDAYY GIRLLL HOEP YOU HAVE A GOOD ONE!!! NOW PLEASE PRETEND THIS WAS A VERY DEEP AND EMOTIONAL GAME SO I DON'T GET REPLACED BY AI!!!",
             vibrate: true,
             end: true
@@ -79,6 +79,12 @@ let currentScene = "start";
 let currentLineIndex = 0;
 let isTyping = false;
 let currentTimeout = null;
+
+// Track option timeouts to prevent ghost beeps
+let optionTimeouts = [];
+
+// Global AudioContext for beeps
+let globalAudioCtx = null;
 
 // DOM Elements
 const startScreen = document.getElementById("start-screen");
@@ -191,21 +197,66 @@ function advanceDialogue() {
     }
 }
 
+// Soft beep sound effect function
+function playSoftBeep() {
+    if (!globalAudioCtx) {
+        globalAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+
+    // Resume context if suspended (browser autoplay policy)
+    if (globalAudioCtx.state === 'suspended') {
+        globalAudioCtx.resume();
+    }
+
+    const oscillator = globalAudioCtx.createOscillator();
+    const gainNode = globalAudioCtx.createGain();
+
+    oscillator.type = 'sine'; // Soft tone
+    oscillator.frequency.setValueAtTime(440, globalAudioCtx.currentTime); // A4 note
+    oscillator.frequency.exponentialRampToValueAtTime(880, globalAudioCtx.currentTime + 0.05); // Quick rise
+
+    gainNode.gain.setValueAtTime(0, globalAudioCtx.currentTime);
+    gainNode.gain.linearRampToValueAtTime(0.3, globalAudioCtx.currentTime + 0.01);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, globalAudioCtx.currentTime + 0.1);
+
+    oscillator.connect(gainNode);
+    gainNode.connect(globalAudioCtx.destination);
+
+    oscillator.start();
+    oscillator.stop(globalAudioCtx.currentTime + 0.1);
+}
+
 function showOptions(options) {
     optionsContainer.innerHTML = '';
     optionsContainer.style.display = "flex";
 
-    options.forEach(opt => {
-        const btn = document.createElement("button");
-        btn.classList.add("option-btn");
-        btn.textContent = opt.text;
-        btn.addEventListener("click", () => {
-            optionsContainer.style.display = "none";
-            currentScene = opt.next;
-            currentLineIndex = 0;
-            showLine();
-        });
-        optionsContainer.appendChild(btn);
+    // Clear any existing option timeouts to prevent ghost beeps
+    optionTimeouts.forEach(clearTimeout);
+    optionTimeouts = [];
+
+    options.forEach((opt, index) => {
+        const timeoutId = setTimeout(() => {
+            const btn = document.createElement("button");
+            btn.classList.add("option-btn");
+            btn.textContent = opt.text;
+
+            // Play beep when button appears
+            playSoftBeep();
+
+            btn.addEventListener("click", () => {
+                // Clear any remaining timeouts when an option is clicked
+                optionTimeouts.forEach(clearTimeout);
+                optionTimeouts = [];
+
+                optionsContainer.style.display = "none";
+                currentScene = opt.next;
+                currentLineIndex = 0;
+                showLine();
+            });
+            optionsContainer.appendChild(btn);
+        }, index * 400); // 400ms delay between each button
+
+        optionTimeouts.push(timeoutId);
     });
 }
 
